@@ -1,0 +1,13 @@
+diff --git a/gmetad/server.c b/gmetad/server.c
+index a2cd0ac..5fb0bfa 100644
+--- a/gmetad/server.c
++++ b/gmetad/server.c
+@@ -1267,7 +1267,7 @@ server_thread (void *arg)
+ 
+          if(root_report_end(&client))
+             {
+-               err_msg("server_thread() %lx unable to write root epilog",
++               debug_msg("server_thread() %lx unable to write root epilog",
+                        (unsigned long) pthread_self() );
+             }
+ 
