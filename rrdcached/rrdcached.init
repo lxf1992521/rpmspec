@@ -1,0 +1,115 @@
+#!/bin/bash
+#
+# rrdcached       This shell script takes care of starting and stopping
+#                 the RRDTool caching daemon.
+#
+# chkconfig: 2345 19 81
+# description:    RRDCacheD is the data caching daemon for RRDTool.
+# processname:    rrdcached
+# config:         /etc/sysconfig/rrdcached
+# pidfile:        /var/run/rrdcached.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 1
+
+# Defines
+DESC="the RRDTool data cache (RRDCacheD)"
+PROG="rrdcached"
+EXEC="/usr/bin/${PROG}"
+LOCK="/var/lock/subsys/${PROG}"
+PIDF="/var/run/${PROG}/${PROG}.pid"
+
+# Include config
+if [ -s /etc/sysconfig/${PROG} ]; then
+  . /etc/sysconfig/${PROG}
+fi
+
+# Further defines
+FSMAX="${FSMAX:-1024}"
+RUN_AS="${RUN_AS:-rrdcached}"
+SOCKFILE="${SOCKFILE:-/var/run/${PROG}/${PROG}.sock}"
+OPTIONS="${OPTIONS:--P FLUSH -j /var/lib/${PROG}/jnl -F -b /var/lib/${PROG}/db -B}"
+
+# Check for binaries
+[ -x ${EXEC} ] || exit 5
+
+
+start() {
+	# Start daemons.
+	echo -n $"Starting ${DESC}: "
+
+	# Set max. filehandles
+	ulimit -HSn ${FSMAX}
+
+	daemon --user=${RUN_AS} ${EXEC} -s ${PROG} -m 0660 -l unix:${SOCKFILE} -p ${PIDF} ${OPTIONS}
+	RETVAL=${?}
+
+	[ ${RETVAL} -eq 0 ] && touch ${LOCK}
+	echo
+	return ${RETVAL}
+}
+
+stop() {
+	# Stop daemons.
+	echo -n $"Shutting down ${DESC}: "
+	killproc ${PROG}
+	RETVAL=${?}
+
+	[ ${RETVAL} -eq 0 ] && rm -f ${LOCK} ${PIDF}
+	echo
+	return ${RETVAL}
+}
+
+restart() {
+	stop
+	sleep 2
+	start
+}
+
+force_reload() {
+	restart
+}
+
+rh_status() {
+	status ${PROG}
+}
+
+rh_status_q() {
+	rh_status >/dev/null 2>&1
+}
+
+
+# See how we were called.
+case "${1}" in
+    start)
+	rh_status_q && exit 0
+	${1}
+	;;
+    stop)
+	rh_status_q || exit 0
+	${1}
+	;;
+    restart)
+	${1}
+	;;
+    force-reload)
+	force_reload
+	;;
+    status)
+	rh_status
+	;;
+    condrestart|try-restart)
+	rh_status_q || exit 0
+	restart
+	;;
+    *)
+	echo $"Usage: ${PROG} {start|stop|status|restart|try-restart|force-reload}"
+	exit 2
+esac
+exit ${?}

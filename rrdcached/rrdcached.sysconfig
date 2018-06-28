@@ -1,0 +1,13 @@
+# /etc/sysconfig/rrdcached
+#
+# Max. concurrent filehandles
+# FSMAX=1024
+#
+# User to run the daemon as
+# RUN_AS="rrdcached"
+#
+# Local Unix domain socket
+# SOCKFILE="/var/run/rrdcached/rrdcached.sock"
+#
+# Add extra daemon options here
+# OPTIONS="-P FLUSH -j /var/lib/rrdcached/jnl -F -b /var/lib/rrdcached/db -B"
