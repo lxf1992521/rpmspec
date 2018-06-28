@@ -1,0 +1,22 @@
+diff --git a/etc/interfacetable_v3t.conf.httpd.in b/etc/interfacetable_v3t.conf.httpd.in
+index 567d624..1121fa4 100644
+--- a/etc/interfacetable_v3t.conf.httpd.in
++++ b/etc/interfacetable_v3t.conf.httpd.in
+@@ -1,17 +1,3 @@
+-ScriptAlias @cgiurlrel@ "@cgidir@"
+-
+-<Directory "@cgidir@">
+-    #SSLRequireSSL
+-    Options ExecCGI
+-    AllowOverride None
+-    Order allow,deny
+-    Allow from all
+-    AuthName "@apache_authname@"
+-    AuthType Basic
+-    AuthUserFile @apache_authfile@
+-    Require valid-user
+-</Directory>
+-
+ Alias @htmlurlrel@ "@sharedir@"
+ 
+ <Directory "@sharedir@">

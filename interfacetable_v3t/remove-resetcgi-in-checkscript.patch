@@ -1,0 +1,38 @@
+diff --git a/libexec/check_interface_table_v3t.pl.in b/libexec/check_interface_table_v3t.pl.in
+index 9e2328d..60eb6ed 100644
+--- a/libexec/check_interface_table_v3t.pl.in
++++ b/libexec/check_interface_table_v3t.pl.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env perl -w
++#!/usr/bin/perl -w
+ # nagios: -epn
+ 
+ # ------------------------------------------------------------------------
+@@ -6102,10 +6102,6 @@ sub WriteHtmlFile {
+             <img src="../img/arrow_left.png" alt="back"/>
+             back
+         </a>
+-        <a class="red" href="' . $ghOptions{reseturl} . '/InterfaceTableReset_v3t.cgi?Command=rm&What=' . $gInterfaceInformationFile . '">
+-            <img src="../img/arrow_refresh.png" alt="reset table"/>
+-            reset table
+-        </a>
+     </div>
+     <div id="footer">
+         interfacetable_v3t ' . $REVISION . '
+@@ -6913,7 +6909,7 @@ sub print_usage () {
+         [--cachedir <caching directory>] [--statedir <state files directory>] [--(no)duplex] [--(no)stp]
+         [--(no)vlan] [--accessmethod <method>[:<target>]] [--htmltabledir <system path to html interface tables>]
+         [--htmltableurl <url to html interface tables>] [--htmltablelinktarget <target window>] [-d <delta>] [--ifs <separator>]
+-        [--cache <cache retention time>] [--reseturl <url to reset cgi>] [--(no)ifloadgradient]
++        [--cache <cache retention time>] [--(no)ifloadgradient]
+         [--(no)human] [--(no)snapshot] [-g <grapher solution>] [--grapherurl <url to grapher>]
+         [--portperfunit <unit>] [--perfdataformat <format>] [--perfdatathreshold <format>] [--outputshort]
+         [--snmp-timeout <timeout>] [--snmp-retries <number of retries>] [--snmp-maxmsgsize <maximum message size>]
+@@ -7387,7 +7383,6 @@ sub check_options () {
+         'ifs'                       => ',',
+         'usemacaddr'                => 0,
+         'cache'                     => 3600,
+-        'reseturl'                  => "@cgiurl@",
+         'ipinfo'                    => 1,
+         'duplex'                    => 0,
+         'stp'                       => 0,
