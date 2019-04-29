@@ -1,0 +1,47 @@
+# Will emit both the absolute amount of disk space left in GB as well as
+# percentage e.g.
+# disk_free_absolute_rootfs = 25.285355
+# disk_free_percent_rootfs = 9.471972
+#
+# =========================================
+# metric_prefix = 'disk_free_'
+# # set Metrics Prefix, default is "disk_free_".
+# min_disk_size = 1
+# # report only disks larger than 1 GB, default is 1
+# explicit_mounts_fs = "ext2 ext3 ext4 xfs"
+# # report only disk filesystem is ext2 or ext3 or ext4 or xfs, default is "ext2 ext3 ext4 xfs"
+# exclude_mounts_point = "/boot /media"
+# # exclude mount point /boot and /media, default is null.
+# explicit_mounts_point = "/dev/shm"
+# # explicit mount point /dev/shm, default is null.
+# =========================================
+
+modules {
+    module {
+        name = "diskfree"
+        language = "python"
+
+
+        # Minimum disk size to report in GB
+        param min_disk_size {
+            value = 1
+        }
+
+        param exclude_mounts_point {
+            value = "/boot"
+        }
+
+        param explicit_mounts_point {
+            value = "/dev/shm"
+        }
+    }
+}
+
+collection_group {
+    collect_every  = 60
+    time_threshold = 180
+
+    metric {
+        name_match = "disk_free_(.+)"
+    }
+}

@@ -1,0 +1,21 @@
+modules {
+    module {
+        name = 'tcpstat'
+        language = 'python'
+
+        param RefreshRate {
+            value = 30
+        }
+    }
+}
+
+collection_group {
+
+    collect_every  = 30
+    time_threshold = 90
+
+    metric {
+        name_match = "tcp_(.+)"
+        value_threshold = 1.0
+    }
+}
