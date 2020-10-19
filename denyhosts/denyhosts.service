@@ -1,0 +1,10 @@
+[Unit]
+Description=SSH log watcher
+Before=sshd.service
+
+[Service]
+ExecStart=/usr/sbin/denyhosts --foreground --noemail
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
